@@ -40,13 +40,27 @@ class BeaconScanner(ble.Scanner, object):
 	This class is derived from the bluepy.btle.Scanner class.
 	"""
 
-	def __init__(self):
+	def __init__(self, log_config = bd.BD_LOG_CONFIG_DEFAULT):
 		"""
 		Initializes the base class and defines BeaconScannerDelegate as
 		bluepy delegate class.
 		"""
 		ble.Scanner.__init__(self)
 		self.withDelegate(BeaconScannerDelegate())
+		self.set_log_config(log_config)
+
+	def set_log_config(self, log_config):
+		"""
+		Sets the bit array which defines which data items are saved to file
+		(True == 1 == save, False == 0 == do not save).
+		The bit field is defined as follows:
+		| name | MAC address | RSSI | manufacturer ID | subtype |
+		| subtype length | proximity UUID | major | minor | signal power |
+
+		@param	log_config:	the bit string specifying the log configuration
+							e.g. "0b1010000000" logs only name and RSSI
+		"""
+		self.log_config = log_config		
 
 	def scan(self, timeout = 10.0):
 		"""
@@ -74,15 +88,15 @@ class BeaconScanner(ble.Scanner, object):
 				if (adtype == bd.BD_TYPE_NAME):
 					name = value
 					if beacon_data_item_generated:
-						self.beacon_data[-1].setName(name)
+						self.beacon_data[-1].set_name(name)
 				
 				# get iBeacon data of device
 				if (adtype == bd.BD_TYPE_CUSTOM):
 					beacon_data_item_generated = True
 					
-					self.beacon_data.append(bd.BeaconData(name))
-					if self.beacon_data[-1].setData(value):
-						self.beacon_data[-1].setDevice(dev.addr, dev.rssi)
+					self.beacon_data.append(bd.BeaconData(name, self.log_config))
+					if self.beacon_data[-1].set_data(value):
+						self.beacon_data[-1].set_device(dev.addr, dev.rssi)
 					else:
 						self.beacon_data.pop()
 
