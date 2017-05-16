@@ -36,11 +36,12 @@ DARE2SHARE_HEADER = """
 #########################################################################
 #                                                                       #
 # Project: dare2share - Junge Akademie - Technical University of Munich #
+# Mail:    dare2share@jungeakademie.tum.de                              #
 # Authors: David Wei, Gunther Bidlingmaier, Max Bauer                   #
 # Date:    16/05/2017                                                   #
 # Version: 0.0                                                          #
-# Mail:    dare2share@jungeakademie.tum.de                              #
 # Python:  2.7                                                          #
+# Source:  github.com/dare2share/ble_tracking                           #
 #                                                                       #
 #########################################################################
 """

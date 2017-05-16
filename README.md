@@ -12,7 +12,7 @@ This code is written in Python 2.7 and depends on the Linux Bluetooth stack Blue
 To install the required libraries run the following commands:
 ```sh
 sudo apt-get install python-pip libglib2.0-dev
-sudo pip install bluepy
+sudo pip install bluepy bitstring
 ```
 
 
