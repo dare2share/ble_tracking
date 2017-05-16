@@ -7,10 +7,19 @@ This project is part of the scholarship programme [TUM: Junge Akademie](jungeaka
 
 ## Dependencies
 
-This code is written in Python 3.5 and depends on the Linux Bluetooth stack BlueZ as it is expected to run on a Raspberry Pi Zero. The python interface used to access Bluetooth Low Energy is [bluepy](github.com/IanHarvey/bluepy).
+This code is written in Python 2.7 and depends on the Linux Bluetooth stack BlueZ as it is expected to run on a Raspberry Pi Zero. The python interface used to access Bluetooth Low Energy is [bluepy](github.com/IanHarvey/bluepy).
 
 To install the required libraries run the following commands:
 ```sh
 sudo apt-get install python-pip libglib2.0-dev
-sudo pip install bluepy 
+sudo pip install bluepy
+```
+
+
+## Application
+
+As this application requires access to the Bluetooth interface, it has to be started with root privileges. The main python file is located at `src/ble_tracking.py`. Assuming the working directory to be this repository's root directory, the application can be run with:
+```sh
+cd src
+sudo python3 ./ble_tracking.py
 ```
