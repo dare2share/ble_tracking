@@ -27,4 +27,4 @@ sudo python ./ble_tracking.py
 
 ## Affiliation
 
-![dare2share - Junge Akademie - Universitatsstiftung - Technical University of Munich](/doc/affiliation_logos.svg)
+![dare2share - Junge Akademie - Universitatsstiftung - Technical University of Munich](https://rawgit.com/dare2share/ble_tracking/master/doc/affiliation_logos.svg)
