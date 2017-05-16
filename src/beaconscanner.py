@@ -81,8 +81,10 @@ class BeaconScanner(ble.Scanner, object):
 					beacon_data_item_generated = True
 					
 					self.beacon_data.append(bd.BeaconData(name))
-					self.beacon_data[-1].setData(value)
-					self.beacon_data[-1].setDevice(dev.addr, dev.rssi)
+					if self.beacon_data[-1].setData(value):
+						self.beacon_data[-1].setDevice(dev.addr, dev.rssi)
+					else:
+						self.beacon_data.pop()
 
 		return devices
 
