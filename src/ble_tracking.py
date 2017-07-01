@@ -19,8 +19,8 @@ for bd_item in myBeaconData:
 ####################
 
 print("TEST #2 (beacon logger)")
-myBeaconLogger = bl.BeaconLogger("data/", station_ID = "myStationID", scan_duration = 3, log_config = bl.bs.bd.BD_LOG_CONFIG_DEFAULT)
-myBeaconLogger.run(20)
+myBeaconLogger = bl.BeaconLogger("/home/pi/data/", station_ID = "myStationID", scan_duration = 3, log_config = bl.bs.bd.BD_LOG_CONFIG_DEFAULT)
+myBeaconLogger.run()
 
 ####################
 
