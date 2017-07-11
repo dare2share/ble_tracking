@@ -1,0 +1,25 @@
+[Unit]
+Description=dare2share BLE tracking
+
+StartLimitIntervalSec=10min
+StartLimitBurst=10
+
+[Service]
+Type=simple
+Environment="D2S_SCANDURATION=60"
+Environment="D2S_STATION_SAMPLE=stationSAMPLE"
+Environment="D2S_STATION_UNORD=stationUNORD"
+Environment="D2S_STATION_USUED=stationUSUED"
+Environment="D2S_STATION_MENSA=stationMENSA"
+Environment="D2S_STATION_MI=stationMI"
+Environment="D2S_STATION_MW=stationMW"
+Environment="D2S_STATION_PH=stationPH"
+Environment="D2S_STATION_CH=stationCH"
+ExecStart=/home/pi $D2S_STATION_CH $D2S_SCANDURATION
+WorkingDirectory=/home/pi
+
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
