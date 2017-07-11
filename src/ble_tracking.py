@@ -27,11 +27,13 @@ myBeaconLogger.run()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("stationID", help = "unique name of the sharing station")
+parser.add_argument("-d", "--scanDuration", help = "scan duration in seconds", nargs = 1, type = int, default = [3])
 args = parser.parse_args()
 stationID = args.stationID
-print("Initiating tracking as station \"" + stationID + "\"")
+scanDuration = args.scanDuration[0]
+print("Initiating tracking as station \"" + stationID + "\" with scan duration " + str(scanDuration) + "s")
 
-beaconLogger = bl.BeaconLogger("data/", station_ID = stationID, scan_duration = 3, log_config = bl.bs.bd.BD_LOG_CONFIG_DEFAULT)
+beaconLogger = bl.BeaconLogger("data/", station_ID = stationID, scan_duration = scanDuration, log_config = bl.bs.bd.BD_LOG_CONFIG_DEFAULT)
 beaconLogger.run()
 
 ####################
