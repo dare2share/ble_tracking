@@ -1,6 +1,8 @@
 [Unit]
 Description=dare2share BLE tracking
 
+Requires=home.mount
+After=home.mount
 StartLimitIntervalSec=10min
 StartLimitBurst=10
 
@@ -15,7 +17,9 @@ Environment="D2S_STATION_MI=stationMI"
 Environment="D2S_STATION_MW=stationMW"
 Environment="D2S_STATION_PH=stationPH"
 Environment="D2S_STATION_CH=stationCH"
-ExecStart=/home/pi $D2S_STATION_CH $D2S_SCANDURATION
+Environment="D2S_BLET_PATH=/home/pi/ble_tracking/src/ble_tracking.py"
+Environment="D2S_BLET_OPTION_SCANDURATION=-d"
+ExecStart=python $D2S_BLET_PATH $D2S_STATION_CH $D2S_BLET_OPTION_SCANDURATION $D2S_SCANDURATION
 WorkingDirectory=/home/pi
 
 Restart=always

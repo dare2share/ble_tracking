@@ -1,6 +1,8 @@
 [Unit]
 Description=dare2share BLE tracking
 
+Requires=home.mount
+After=home.mount
 StartLimitIntervalSec=10min
 StartLimitBurst=10
 
