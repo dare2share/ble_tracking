@@ -2,6 +2,7 @@
 
 import codecs
 import bitstring
+import binascii
 
 # Bluetooth Low Energy Specification
 BLE_LENGTH = 0x02						# 1 byte [0]
@@ -26,6 +27,7 @@ DEV_RSSI = 0							# receive signal strength indicator in dB
 
 # Class Settings
 BD_LOG_CONFIG_DEFAULT = "0b1110001111"
+D2S_UUID_DEFAULT = b'TUMJA-dare2share'
 
 
 class BeaconData(object):
@@ -33,14 +35,17 @@ class BeaconData(object):
 	This class provides a data structure to store iBeacon data.
 	"""
 
-	def __init__(self, name = "Undefined beacon data", log_config = BD_LOG_CONFIG_DEFAULT):
+	def __init__(self,	name = "Undefined beacon data",
+						log_config = BD_LOG_CONFIG_DEFAULT,
+						uuid_filter = D2S_UUID_DEFAULT):
 		"""
 		Null-initializes its member variables.
 
-		@param	name:		an identifier name specifying this particular beacon data
-		@param	log_config:	bit string specifying which data should be saved to file, bit field:
-							| name | MAC address | RSSI | manufacturer ID | subtype |
-							| subtype length | proximity UUID | major | minor | signal power |
+		@param	name:			an identifier name specifying this particular beacon data
+		@param	log_config:		bit string specifying which data should be saved to file, bit field:
+								| name | MAC address | RSSI | manufacturer ID | subtype |
+								| subtype length | proximity UUID | major | minor | signal power |
+		@param	uuid_filter:	the UUID value with which differing beacons can be discarded
 		"""
 		self.name = name
 		self.manufacturer_ID = 0x0000
@@ -55,6 +60,7 @@ class BeaconData(object):
 		self.rssi = DEV_RSSI
 
 		self.log_config = bitstring.BitArray(log_config)
+		self.uuid_filter = uuid_filter
 
 	def __str__(self):
 		"""
@@ -95,6 +101,15 @@ class BeaconData(object):
 		"""
 		self.log_config = bitstring.BitArray(log_config)
 
+	def set_uuid_filter(self, uuid_filter):
+		"""
+		Sets a reference proximity UUID. This value can be used by the method set_data to
+		filter out beacons with a differing UUID.
+
+		@param	uuid_filter:	the UUID filter value
+		"""
+		self.uuid_filter = uuid_filter
+
 	def set_device(self, mac, rssi):
 		"""
 		Sets device specific data.
@@ -105,7 +120,7 @@ class BeaconData(object):
 		self.mac = mac
 		self.rssi = rssi
 
-	def set_data(self, new_data, check_if_beacon = True):
+	def set_data(self, new_data, check_if_beacon = True, use_uuid_filter = False):
 		"""
 		Converts a (unicode) byte array of the 30-byte beacon data into the iBeacon
 		structure specified by Apple. This data is then stored in the internal member
@@ -114,6 +129,8 @@ class BeaconData(object):
 		@param	new_data:			the (unicode) byte array of beacon data to be saved
 		@param	check_if_beacon:	a boolean flag whether the passed data should be
 									checked if the specifications are met
+		@param	use_uuid_filter:	a boolean flag whether the UUID should be checked against
+									the UUID filter value previously defined
 		@return:					returns whether data conversion was successful,
 									always returns true if check_if_beacon is set to False
 		"""
@@ -128,7 +145,8 @@ class BeaconData(object):
 		self.manufacturer_ID = int(codecs.encode(byte_data[0:2], "hex"), 16)
 		self.subtype = int(codecs.encode(byte_data[2:3], "hex"), 16)
 		self.subtype_length = int(codecs.encode(byte_data[3:4], "hex"), 16)
-		self.proximity_UUID = codecs.encode(byte_data[4:20], "hex")
+		self.proximity_UUID = binascii.unhexlify(str(codecs.encode(byte_data[4:20], "hex")))
+		print(self.proximity_UUID, self.uuid_filter)
 		self.major = int(codecs.encode(byte_data[20:22], "hex"), 16)
 		self.minor = int(codecs.encode(byte_data[22:24], "hex"), 16)
 		self.signal_power = int(codecs.encode(byte_data[24:25], "hex"), 16)
@@ -137,6 +155,12 @@ class BeaconData(object):
 			if self.subtype != BD_SUBTYPE_IBEACON or self.subtype_length != BD_SUBTYPE_LENGTH:
 				print(self.name + ": data content does not correspond to iBeacon specification")
 				ret = False
+
+		if use_uuid_filter:
+			print("Testing UUID filter")
+			if self.proximity_UUID != self.uuid_filter:
+				ret = False
+				print("negative result")
 
 		return ret
 

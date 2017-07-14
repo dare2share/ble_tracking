@@ -107,13 +107,18 @@ class BeaconLogger(bs.BeaconScanner, object):
 		# check for directory/file existence
 		if not os.path.exists(self.data_folder_path):
 			os.makedirs(self.data_folder_path)
-		if not os.path.exists(self.get_file_path()):
+		if os.path.exists(self.get_file_path()):
+			file = open(self.get_file_path(), "r")
+			if json.loads(file.readline())["log_config"] != self.log_config:
+				write_header = True
+			file.close()
+		else:
 			write_header = True
 		
 		# open and prepare log file
 		self.file = open(self.get_file_path(), "a")
 		if write_header:
-			self.file.write("\"dare2share.stationdata." + self.station_ID + "." + self.get_timestamp("h") + "\"\n")
+			self.file.write(json.dumps({"log_config": self.log_config}) + "\n")
 
 		return True
 
