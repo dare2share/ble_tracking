@@ -146,7 +146,6 @@ class BeaconData(object):
 		self.subtype = int(codecs.encode(byte_data[2:3], "hex"), 16)
 		self.subtype_length = int(codecs.encode(byte_data[3:4], "hex"), 16)
 		self.proximity_UUID = binascii.unhexlify(str(codecs.encode(byte_data[4:20], "hex")))
-		print(self.proximity_UUID, self.uuid_filter)
 		self.major = int(codecs.encode(byte_data[20:22], "hex"), 16)
 		self.minor = int(codecs.encode(byte_data[22:24], "hex"), 16)
 		self.signal_power = int(codecs.encode(byte_data[24:25], "hex"), 16)
@@ -157,10 +156,8 @@ class BeaconData(object):
 				ret = False
 
 		if use_uuid_filter:
-			print("Testing UUID filter")
 			if self.proximity_UUID != self.uuid_filter:
 				ret = False
-				print("negative result")
 
 		return ret
 

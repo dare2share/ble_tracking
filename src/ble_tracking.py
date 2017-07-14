@@ -33,7 +33,7 @@ stationID = args.stationID
 scanDuration = args.scanDuration[0]
 print("Initiating tracking as station \"" + stationID + "\" with scan duration " + str(scanDuration) + "s")
 
-beaconLogger = bl.BeaconLogger("data/", station_ID = stationID, scan_duration = scanDuration, log_config = bl.bs.bd.BD_LOG_CONFIG_DEFAULT)
+beaconLogger = bl.BeaconLogger("data/", station_ID = stationID, scan_duration = scanDuration, log_config = "0b0000000110")
 beaconLogger.run()
 
 ####################
