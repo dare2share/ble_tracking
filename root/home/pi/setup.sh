@@ -1,9 +1,3 @@
 echo run as root
-
-systemctl enable unord.ble_tracking.service
-systemctl enable usued.ble_tracking.service
-systemctl enable mensa.ble_tracking.service
-systemctl enable mi.ble_tracking.service
-systemctl enable mw.ble_tracking.service
-systemctl enable ph.ble_tracking.service
-systemctl enable ch.ble_tracking.service
+cp /home/pi/ble_tracking/root/lib/systemd/system/$1.ble_tracking.service /lib/systemd/system/
+systemctl enable $1.ble_tracking.service
