@@ -1,3 +1,5 @@
+#setup script for raspberry
+#(hopefully) idempotent with same parameters
 echo run as root
 echo Example usage: "bash setup.sh ch", get abbreviations from pi_to_port
 
@@ -14,3 +16,6 @@ cat > /usr/bin/ssh-tunneling << EOL
 #!/bin/sh
 autossh -M 20000 -f -N di36him@webdev-tum.lrz.de -R $port:localhost:22 -C
 EOL
+
+#file for recognizing which host this is
+touch ~/$1
