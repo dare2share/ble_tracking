@@ -20,4 +20,4 @@ autossh -M 20000 -f -N di36him@webdev-tum.lrz.de -R $port:localhost:22 -C
 EOL
 
 #file for recognizing which host this is
-touch ~/$1
+touch /home/pi/$1
