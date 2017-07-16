@@ -4,6 +4,8 @@ echo run as root
 echo Example usage: "bash setup.sh ch", get abbreviations from pi_to_port
 
 #copy correct service file
+systemctl disable ch.ble_tracking.service
+systemctl stop ch.ble_tracking.service
 cp /home/pi/ble_tracking/root/lib/systemd/system/$1.ble_tracking.service /lib/systemd/system/
 systemctl enable $1.ble_tracking.service
 systemctl start $1.ble_tracking.service
